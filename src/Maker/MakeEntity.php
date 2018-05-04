@@ -147,6 +147,21 @@ final class MakeEntity extends AbstractMaker
             'Repository'
         );
 
+        $namespace = $input->getOption('namespace');
+
+        if ($namespace && \count($namespace) === 2) {
+            $entityClassDetails = $generator->createClassNameDetails(
+                $input->getArgument('name'),
+                $namespace[0]
+            );
+
+            $repositoryClassDetails = $generator->createClassNameDetails(
+                $entityClassDetails->getRelativeName(),
+                $namespace[1],
+                'Repository'
+            );
+        }
+
         $classExists = class_exists($entityClassDetails->getFullName());
         if (!$classExists) {
             $entityPath = $generator->generateClass(
